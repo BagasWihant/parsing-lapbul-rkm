@@ -14,8 +14,9 @@
                         class="lni lni-arrow-left"></i></a>
             </div>
             
-            <div class="flex justify-center items-center flex-wrap text-wrap py-5">
-                <p class="text-center font-semibold text-3xl my-3 dark:text-gray-100 text-gray-900">Parser 0100</p>
+            <div class="flex  flex-col py-5 w-full text-center font-semibold text-3xl dark:text-gray-100 text-gray-900">
+                <p class=" my-3 ">Parser</p>
+                <p>0100</p>
             </div>
             @if (Session::has('message'))
                 <p class="text-center font-semibold text-3xl text-red-400 my-3">{{ Session::get('message') }} </p>
