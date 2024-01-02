@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.dropzone .dz-preview .dz-error-message{
+    top: 50px !important;
+}
