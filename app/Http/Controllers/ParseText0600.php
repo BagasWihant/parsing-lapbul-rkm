@@ -30,24 +30,22 @@ class ParseText0600 extends Controller
 
         $semuaData = [];
         $namaBenar = [
-            'LBBPRK-0600-R-M',
-            'LBBPRK-0800-R-M',
-            'LBBPRK-0900-R-M',
-            'LBBPRK-1000-R-M',
-            'LBBPRK-1100-R-M',
-            'LBBPRK-1200-R-M',
-            'LBBPRK-1500-R-M',
+            'LBBPRK-0100-R-M',
+            'LBBPRK-0200-R-M',
+            'LBBPRK-0101-R-M',
         ];
 
         // Parsing file
         foreach ($fileUpload as $file) {
 
             $namaUpload = $file->getClientOriginalName();
-            if (in_array(substr($namaUpload, 0, 15) ,$namaBenar)){
+            if (!in_array(substr($namaUpload, 0, 15) ,$namaBenar)){
                 if($namaFileUpload != $namaUpload) return response('Upload file yang sama jangan berbeda-beda',406);
                 $textParser = $this->parser600($file, $urutan);
                 $semuaData[] = $textParser;
                 $urutan++;
+            }else{
+                return response('File tidak didukung',406);
             }
         }
 
