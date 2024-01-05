@@ -62,24 +62,7 @@ trait TraitCombineText
             '3000000000' => &$ak3000000000
         ];
 
-        $temp = collect($collect)
-            ->flatten(1)
-            ->filter(function ($inti) use ($akTotals) {
-                return $inti[1] !== '000' && isset($akTotals[$inti[2]]);
-            });
-
-
-        // hapus jika ada dobel 
-        $unik = collect($temp)->unique(function ($item) {
-            return $item[1] . $item[2];
-        });
-
-        foreach ($unik as $key) {
-            if ($key[1] !== '000' && isset($akTotals[$key[2]])) {
-                $akTotals[$key[2]] += $key[3];
-            }
-        }
-
+        $unik = $this->calculate($collect,$akTotals);
 
         // buat 000
         $total000 = '';
@@ -245,24 +228,7 @@ trait TraitCombineText
             '3104040600' => &$ak3104040600,
         ];
 
-        $temp = collect($collect)
-            ->flatten(1)
-            ->filter(function ($inti) use ($akTotals) {
-                return $inti[1] !== '000' && isset($akTotals[$inti[2]]);
-            });
-
-
-        // hapus jika ada dobel 
-        $unik = collect($temp)->unique(function ($item) {
-            return $item[1] . $item[2];
-        });
-
-        foreach ($unik as $key) {
-            if ($key[1] !== '000' && isset($akTotals[$key[2]])) {
-                $akTotals[$key[2]] += $key[3];
-            }
-        }
-
+        $unik = $this->calculate($collect,$akTotals);
 
         // buat 000
         $total000 = '';
@@ -389,25 +355,8 @@ trait TraitCombineText
             '6201990000' => &$ak6201990000, '6202000000' => &$ak6202000000,
             '6900000000' => &$ak6900000000
         ];
-
-        $temp = collect($collect)
-            ->flatten(1)
-            ->filter(function ($inti) use ($akTotals) {
-                return $inti[1] !== '000' && isset($akTotals[$inti[2]]);
-            });
-
-
-        // hapus jika ada dobel 
-        $unik = collect($temp)->unique(function ($item) {
-            return $item[1] . $item[2];
-        });
-
-        foreach ($unik as $key) {
-            if ($key[1] !== '000' && isset($akTotals[$key[2]])) {
-                $akTotals[$key[2]] += $key[3];
-            }
-        }
-
+        
+        $unik = $this->calculate($collect,$akTotals);
 
         // buat 000
         $total000 = '';
@@ -440,6 +389,7 @@ trait TraitCombineText
 
         return $total000 . $temp1;
     }
+
     public function combine600($array)
     {
         $collect = collect($array);
@@ -454,5 +404,27 @@ trait TraitCombineText
         }
 
         return $temp1;
+    }
+
+    private function calculate($collect,$akTotals) {
+        $temp = collect($collect)
+            ->flatten(1)
+            ->filter(function ($inti) use ($akTotals) {
+                return $inti[1] !== '000' && isset($akTotals[$inti[2]]);
+            });
+
+
+        // hapus jika ada dobel 
+        $unik = collect($temp)->unique(function ($item) {
+            return $item[1] . $item[2];
+        });
+
+        foreach ($unik as $key) {
+            if ($key[1] !== '000' && isset($akTotals[$key[2]])) {
+                $akTotals[$key[2]] += $key[3];
+            }
+        }
+
+        return $unik;
     }
 }
