@@ -6,23 +6,24 @@
 
 @section('content')
     <div
-        class="sm:items-center min-h-screen flex justify-center items-center  bg-dots-darker dark:bg-dots-lighter selection:bg-red-500 selection:text-white">
+        class="sm:items-center min-h-screen flex justify-center bg-dots-darker dark:bg-dots-lighter selection:bg-red-500 selection:text-white">
 
         <div class="p-4  w-max bg-whtie rounded-lg">
-            <div class="  flex items-center justify-start" id="backButton">
-                <a href="{{ route('menu-text') }}" class="text-white uppercase bg-green-600 rounded-full aspect p-2 flex "><i
-                        class="lni lni-arrow-left"></i></a>
+            <div class="flex items-center justify-start" id="backButton">
+                <a aria-label="back" href="{{ route('menu-text') }}"
+                class="text-white uppercase bg-green-600 rounded-full aspect p-2 flex items-center gap-2"><i
+                    class="lni lni-arrow-left"></i> kembali</a>
             </div>
-            
-            <div class="flex  flex-col py-5 w-full text-center font-semibold text-3xl dark:text-gray-100 text-gray-900">
-                <p class=" my-3 ">Parser</p>
-                <p>0200</p>
+
+            <div class="flex items-center flex-col py-5 text-3xl dark:text-gray-100 text-gray-900">
+                <p class>Parser</p>
+                <p> 0200</p>
             </div>
             @if (Session::has('message'))
                 <p class="text-center font-semibold text-3xl text-red-400 my-3">{{ Session::get('message') }} </p>
             @endif
 
-            <div class="relative" style="width: 450px">
+            <div class="relative w-[345px] sm:w-[500px]">
                 <div class="w-full mx-auto">
                     {{-- upload --}}
                     <div id="fileUpload">
@@ -33,10 +34,15 @@
 
                             <div class="absolute -bottom-14 w-full left-0">
                                 <button id="submitForm" type="submit"
-                                    class="bg-green-500 w-full rounded-xl p-2 text-white"> <i
+                                    class="bg-green-700 w-full rounded-xl p-2 text-white"> <i
                                         class="lni lni-printer"></i>Parsing Data</button>
                             </div>
                         </form>
+
+                        <div class="my-2 font-bold ">
+                            <button class="bg-rose-600 p-2 text-white rounded-lg w-full hidden" id="clearFile"
+                                onclick="clearFile()">Bersihkan Semua File</button>
+                        </div>
 
                         <div class="table table-striped w-full" class="files" id="previews">
                             <div id="template"
@@ -92,6 +98,7 @@
             previewTemplate: previewTemplate,
             previewsContainer: '#previews',
             removedfile: function(file) {
+                this.files.length < 1 && $('#clearFile').hide()
                 var fileName = file.name;
 
                 var _ref;
@@ -101,13 +108,18 @@
             init: function() {
                 this.on("success", function(file, res) {
                     $('#fileName').val(res)
-
+                    console.log(file);
                     myDropzone.removeFile(file);
+                    $('#clearFile').hide()
                     $('#fileUpload').hide();
                     $('#backButton').hide();
                     $('#downloadFile').show();
 
                 });
+
+                this.on('addedfile', function(file) {
+                    $('#clearFile').show()
+                })
             }
         });
 
@@ -126,5 +138,11 @@
             $('#backButton').show();
 
         });
+        function clearFile(){
+            files = myDropzone.files
+            files.map(function(file){
+                myDropzone.removeFile(file)
+            })
+        }
     </script>
 @endpush

@@ -22,7 +22,7 @@
 
 </head>
 
-<body class="bg-gray-100 dark:bg-gray-900"> 
+<body class="bg-gray-100 dark:bg-gray-900 "> 
     @yield('content')
 
     @stack('js')

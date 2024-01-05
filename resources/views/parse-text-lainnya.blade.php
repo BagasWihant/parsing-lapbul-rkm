@@ -10,13 +10,13 @@
 
         <div class="p-4  w-max bg-whtie rounded-lg flex flex-col justify-center">
             <div class="  flex items-center justify-start" id="backButton">
-                <a href="{{ route('menu-text') }}" class="text-white uppercase bg-orange-600 rounded-full aspect p-2 flex "><i
-                        class="lni lni-arrow-left"></i></a>
+                <a href="{{ route('menu-text') }}" 
+                class="text-white uppercase bg-orange-600 rounded-full aspect p-2 flex items-center gap-2"><i
+                    class="lni lni-arrow-left"></i> kembali</a>
             </div>
             <div class="flex  flex-col py-5 w-full text-center font-semibold text-3xl dark:text-gray-100 text-gray-900">
                 <p class=" my-3 ">Parser</p>
-                <p>
-                    (0600,0800,0900,1000,1100,1200,1500)</p>
+                <p class="text-balance">( 0600, 0800, 0900, 1000, 1100, 1200, 1500 )</p>
             </div>
             @if (Session::has('message'))
                 <p class="text-center font-semibold text-3xl text-red-400 my-3">{{ Session::get('message') }} </p>
@@ -37,6 +37,12 @@
                                         class="lni lni-printer"></i>Parsing Data</button>
                             </div>
                         </form>
+
+                        
+                        <div class="my-2 font-bold ">
+                            <button class="bg-rose-600 p-2 text-white rounded-lg w-full hidden" id="clearFile"
+                                onclick="clearFile()">Bersihkan Semua File</button>
+                        </div>
 
                         <div class="table table-striped w-full" class="files" id="previews">
                             <div id="template"
@@ -92,6 +98,7 @@
             previewTemplate: previewTemplate,
             previewsContainer: '#previews',
             removedfile: function(file) {
+                this.files.length < 1 && $('#clearFile').hide()
                 var fileName = file.name;
 
                 var _ref;
@@ -105,10 +112,15 @@
 
                     myDropzone.removeFile(file);
                     $('#fileUpload').hide();
+                    $('#clearFile').hide()
                     $('#backButton').hide();
                     $('#downloadFile').show();
 
                 });
+
+                this.on('addedfile', function(file) {
+                    $('#clearFile').show()
+                })
             }
         });
 
@@ -127,5 +139,12 @@
             $('#backButton').show();
 
         });
+        
+        function clearFile(){
+            files = myDropzone.files
+            files.map(function(file){
+                myDropzone.removeFile(file)
+            })
+        }
     </script>
 @endpush
